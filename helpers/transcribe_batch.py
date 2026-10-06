@@ -22,6 +22,13 @@ from pathlib import Path
 
 from transcribe import load_api_key, transcribe_one, transcript_path
 
+# Progress lines contain non-ASCII (→) and source file names may too.
+# Windows consoles and pipes default to a legacy codepage (cp1252) that
+# raises UnicodeEncodeError on them, so force UTF-8 on the std streams.
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8")
+
 
 VIDEO_EXTS = {".mp4", ".MP4", ".mov", ".MOV", ".mkv", ".MKV", ".avi", ".AVI", ".m4v"}
 
