@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## What I want
+
+I forked this repo from github to make a product of mine.
+
 ## What this repo is
 
 video-use is an agent **skill**, not an application. `SKILL.md` is the runtime instruction set an agent follows when editing a user's footage; `helpers/*.py` are the standalone CLI scripts it calls. `install.md` is the first-time setup procedure for end users. There is no build step, no console entry point, and no package — helpers are run directly as `python helpers/<name>.py`.

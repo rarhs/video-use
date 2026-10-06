@@ -194,7 +194,7 @@ BorderStyle=1,Outline=2,Shadow=0,
 Alignment=2,MarginV=90
 ```
 
-**`natural-sentence`** (if you invent this mode) — narrative, documentary, education. 4–7 word chunks, sentence case, break on natural pauses, `MarginV=60–80`, larger font for readability, slightly wider max-width. No shipped force_style — design one if you need it.
+**`natural-sentence`** (if you invent this mode) — narrative, documentary, education. 4–7 word chunks, sentence case, break on natural pauses, `MarginV=75–100` (never below ~75 — lower captions sit under the TikTok / Reels / Shorts UI; see the safe-zone note on `SUB_FORCE_STYLE` in `render.py`), larger font for readability, slightly wider max-width. No shipped force_style — design one if you need it.
 
 Invent a third style if neither fits. Hard rules: subtitles LAST (Rule 1), output-timeline offsets (Rule 5).
 
