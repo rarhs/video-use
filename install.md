@@ -42,11 +42,12 @@ If the repo is already there, `git pull --ff-only` and continue.
 ### 2. Install Python deps
 
 ```bash
-# Prefer uv if available; fall back to pip.
-command -v uv >/dev/null && uv sync || pip install -e .
+# uv is required: SKILL.md runs every helper through `uv run`.
+command -v uv >/dev/null || brew install uv     # or: curl -LsSf https://astral.sh/uv/install.sh | sh
+uv sync
 ```
 
-`pyproject.toml` lists `requests`, `librosa`, `matplotlib`, `pillow`, `numpy`. No console scripts — helpers are invoked directly as `python helpers/<name>.py`.
+`pyproject.toml` lists `requests`, `librosa`, `matplotlib`, `pillow`, `numpy`, pinned in `uv.lock`. `uv sync` installs them into `.venv/` inside the repo. No console scripts — helpers are invoked as `uv run --project ~/Developer/video-use python ~/Developer/video-use/helpers/<name>.py`. Keep `--project`: the agent runs helpers from the user's footage folder, where a bare `uv run` or plain `python` can't see the repo's `.venv/` and fails with `ModuleNotFoundError`.
 
 ### 3. Install ffmpeg (+ optional yt-dlp)
 
@@ -130,7 +131,7 @@ Scribe (ElevenLabs) does all transcription. Without a key, nothing transcribes.
 Run one real thing. Prefer the lightest verification that still proves the pipeline is wired up:
 
 ```bash
-python ~/Developer/video-use/helpers/timeline_view.py --help >/dev/null && echo "helpers OK"
+uv run --project ~/Developer/video-use python ~/Developer/video-use/helpers/timeline_view.py --help >/dev/null && echo "helpers OK"
 ffprobe -version | head -1
 ```
 
@@ -148,7 +149,7 @@ Tell the user, in one short message:
 ## Keeping the skill current
 
 - `cd ~/Developer/video-use && git pull --ff-only` pulls the latest code. The symlink auto-picks it up on the next run.
-- If `pyproject.toml` changed deps, re-run `uv sync` / `pip install -e .` after pulling.
+- If `pyproject.toml` changed deps, re-run `uv sync` after pulling.
 
 ## Cold-start reminders
 

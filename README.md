@@ -59,7 +59,8 @@ ln -sfn ~/Developer/video-use ~/.claude/skills/video-use        # Claude Code
 
 # 2. Install deps
 cd ~/Developer/video-use
-uv sync                         # or: pip install -e .
+brew install uv                 # required; or: curl -LsSf https://astral.sh/uv/install.sh | sh
+uv sync                         # installs pinned deps (uv.lock) into .venv/
 brew install ffmpeg             # required
 brew install yt-dlp             # optional, for downloading online sources
 

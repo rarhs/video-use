@@ -8,17 +8,17 @@ I forked this repo from github to make a product of mine.
 
 ## What this repo is
 
-video-use is an agent **skill**, not an application. `SKILL.md` is the runtime instruction set an agent follows when editing a user's footage; `helpers/*.py` are the standalone CLI scripts it calls. `install.md` is the first-time setup procedure for end users. There is no build step, no console entry point, and no package — helpers are run directly as `python helpers/<name>.py`.
+video-use is an agent **skill**, not an application. `SKILL.md` is the runtime instruction set an agent follows when editing a user's footage; `helpers/*.py` are the standalone CLI scripts it calls. `install.md` is the first-time setup procedure for end users. There is no build step, no console entry point, and no package — helpers are run as `uv run --project <repo> python <repo>/helpers/<name>.py`. `--project` matters: agents run helpers from the user's footage folder, where a bare `uv run` or plain `python` can't see the repo's `.venv/` and fails with `ModuleNotFoundError`.
 
 When changing behavior, keep `SKILL.md` (and `README.md` where relevant) in sync with the helpers: SKILL.md documents helper flags, defaults (e.g. the subtitle `SUB_FORCE_STYLE`, `chunk_words` rules), and the EDL format, and agents trust it over the code.
 
 ## Commands
 
 ```bash
-uv sync                      # or: pip install -e .   (deps: requests, librosa, matplotlib, pillow, numpy)
-python -m unittest discover -s tests                                  # all tests
-python -m unittest tests.test_render_fps                              # one file
-python -m unittest tests.test_render_fps.ParseFpsTests                # one class
+uv sync                                                               # deps pinned in uv.lock, installed to .venv/
+uv run python -m unittest discover -s tests                           # all tests
+uv run python -m unittest tests.test_render_fps                       # one file
+uv run python -m unittest tests.test_render_fps.ParseFpsTests         # one class
 ```
 
 There is no linter or formatter configured. Runtime requires `ffmpeg`/`ffprobe` on PATH; transcription requires `ELEVENLABS_API_KEY` (env var, or `.env` at the repo root — see `.env.example`). Transcription calls cost real money; don't run them to verify changes.
