@@ -10,7 +10,7 @@ Implements the HEURISTICS render pipeline in the correct order:
 
 Optionally builds a master SRT from the per-source transcripts + EDL
 output-timeline offsets, applies the proven force_style (2-word
-UPPERCASE chunks, Helvetica 18 Bold, MarginV=35).
+UPPERCASE chunks, Helvetica 18 Bold, MarginV=90).
 
 Usage:
     python helpers/render.py <edl.json> -o final.mp4
@@ -37,6 +37,13 @@ except Exception:
 
     def auto_grade_for_clip(video, start=0.0, duration=None, verbose=False):  # type: ignore
         return "eq=contrast=1.03:saturation=0.98", {}
+
+# Progress lines contain non-ASCII (→, …) and source file names may too.
+# Windows consoles and pipes default to a legacy codepage (cp1252) that
+# raises UnicodeEncodeError on them, so force UTF-8 on the std streams.
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8")
 
 
 # -------- Subtitle style (bold-overlay, proven at 1920×1080 and 1080×1920) --
